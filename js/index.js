@@ -68,3 +68,59 @@ class Monster extends BaseCharacter {
     this.updateHtml(this.hpElement, this.hurtElement);
   }
 }
+
+var hero = new Hero("Bernard", 130, 30);
+var monster = new Monster("Skeleton", 130, 10);
+
+//技能驅動功能區
+var rounds = 10;        //回合限制功能區
+function endTurn() {
+  rounds--;
+  document.getElementById("round-num").textContent = rounds;
+  if (rounds < 1) {
+    // 「遊戲結束」空白區
+  }
+}
+
+function monsterAttack() {
+  setTimeout(function() {
+    monster.element.classList.add("attacking");
+    setTimeout(function() {
+      monster.attack(hero);
+      monster.element.classList.remove("attacking");
+    }, 500);
+    if (hero.alive) {
+        document.getElementsByClassName("skill-block")[0].style.display = "block";
+        endTurn();
+      }else {
+        
+        }
+  }, 100);
+}
+
+function heroAttack() {
+  document.getElementsByClassName("skill-block")[0].style.display = "none";
+
+  setTimeout(function() {
+    hero.element.classList.add("attacking");
+    setTimeout(function() {
+      hero.attack(monster);
+      hero.element.classList.remove("attacking");
+      if (monster.alive) {
+        setTimeout(function(){
+          monsterAttack()  
+          },1100)
+      }else {
+          document.getElementsByClassName("skill-block")[0].style.display = "block";
+        }
+      }, 500);
+  }, 100);
+}
+
+function addSkillEvent() {            
+  var skill = document.getElementById("skill");
+  skill.onclick = function() { 
+    heroAttack(); 
+  }
+}
+addSkillEvent();
