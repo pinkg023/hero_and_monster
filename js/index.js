@@ -17,6 +17,31 @@ class BaseCharacter {
     if (this.hp <= 0) { 
       this.die();
     }
+
+    var _this = this;
+    var i = 1;
+
+    //為什麼一定要用this不能直用DOM寫就好，而這邊的this又是指什麼？
+    _this.id = setInterval(function() {
+      
+      if (i == 1) {
+          _this.element.getElementsByClassName("effect-image")[0].style.display = "block";
+          _this.element.getElementsByClassName("hurt-text")[0].classList.add("attacked");
+          _this.element.getElementsByClassName("hurt-text")[0].textContent = damage;
+        }
+        
+        _this.element.getElementsByClassName("effect-image")[0].src = 'images/effect/blade/'+ i +'.png';
+        i++;
+
+      if (i > 8) {
+      _this.element.getElementsByClassName("effect-image")[0].style.display = "none";
+      _this.element.getElementsByClassName("hurt-text")[0].classList.remove("attacked");
+      _this.element.getElementsByClassName("hurt-text")[0].textContent = "";
+      clearInterval(_this.id);
+      }
+
+    }, 50);
+
   }
   die() {
     this.alive = false;
