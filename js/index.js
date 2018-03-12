@@ -97,13 +97,24 @@ class Monster extends BaseCharacter {
 var hero = new Hero("Bernard", 130, 30);
 var monster = new Monster("Skeleton", 130, 10);
 
-//技能驅動功能區
-var rounds = 10;        //回合限制功能區
+//遊戲結束
+function finish() {
+  var dialog = document.getElementById("dialog")
+  dialog.style.display = "block";
+  if (monster.alive == false) {
+    dialog.classList.add("win");
+  } else {
+    dialog.classList.add("lose");
+  }
+}
+
+//回合計算
+var rounds = document.getElementById("round-num").textContent  //回合限制功能區
 function endTurn() {
   rounds--;
   document.getElementById("round-num").textContent = rounds;
   if (rounds < 1) {
-    // 「遊戲結束」空白區
+    finish();
   }
 }
 
@@ -113,13 +124,13 @@ function monsterAttack() {
     setTimeout(function() {
       monster.attack(hero);
       monster.element.classList.remove("attacking");
-    }, 500);
-    if (hero.alive) {
+      if (hero.alive) {
         document.getElementsByClassName("skill-block")[0].style.display = "block";
         endTurn();
       }else {
-        
+        finish();
         }
+    }, 500);
   }, 100);
 }
 
@@ -137,6 +148,7 @@ function heroAttack() {
           },1100)
       }else {
           document.getElementsByClassName("skill-block")[0].style.display = "block";
+          finish();
         }
       }, 500);
   }, 100);
